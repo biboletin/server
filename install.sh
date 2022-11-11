@@ -48,10 +48,14 @@ backup_files() {
 
 
 
-install_software
+# install_software
 # configure_iptables
-backup_files
-configure_apache
+# backup_files
+# configure_apache
+
+# configure_filesystem
+
+# configure_permissions
 
 
 # yes | apt update

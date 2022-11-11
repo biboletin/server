@@ -16,7 +16,7 @@ load_spinner() {
     barlength=${#bar}
     i=0
     while ((i < 100)); do
-        n=$((i*barlength / 100))
+        n=$((i * barlength / 100))
         printf "\e[00;34m\r[%-${barlength}s]\e[00m" "${bar:0:n}"
         ((i += RANDOM % 5 + 2))
         sleep 0.02
@@ -42,7 +42,6 @@ main_message() {
     echo ""
 }
 
-
 sub_message() {
     echo -e "\e[93m[-]\e[00m $1"
 }
@@ -58,6 +57,6 @@ create_copy() {
     echo "$1"
     file="$(basename "$1")"
     path="$(dirname "$1")"
-    
+
     cp "$1 ${path}/backup.${file}"
 }

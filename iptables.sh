@@ -1,8 +1,7 @@
 #!/bin/bash
 
 cd /home/${USER}/Documents
-iptables-save > iptables_default_${TODAY}.rules
-
+iptables-save >iptables_default_${TODAY}.rules
 
 iptables -P INPUT ACCEPT
 iptables -P OUTPUT ACCEPT
@@ -30,13 +29,12 @@ iptables -A INPUT -i $LOOPBACK -j ACCEPT -m comment --comment "Allow incoming lo
 iptables -A OUTPUT -o $LOOPBACK -j ACCEPT -m comment --comment "Allow outgoing loopback"
 iptables -A OUTPUT -o $MAIN_NETWORK_INTERFACE -j ACCEPT -m comment --comment "Allow outgoing network interface"
 
-
 # Check if server is used as router
 if [ "true" == "${IS_ROUTER}" ]; then
     if grep -Fxq "net.ipv4.ip_forward" /etc/sysctl.conf; then
         sed -i '/net.ipv4.ip_forward/s/^#//' /etc/sysctl.conf
     else
-        echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
+        echo 'net.ipv4.ip_forward=1' >>/etc/sysctl.conf
     fi
 
     iptables -t nat -A POSTROUTING -j MASQUERADE
@@ -46,7 +44,7 @@ fi
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT -m comment --comment "Allowing established and related incoming connections"
 iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT -m comment --comment "Allowing established outgoing connections"
 # drop invalid packets
-iptables -A INPUT  -m state --state INVALID -j DROP -m comment --comment "Drop invalid INPUT packets"
+iptables -A INPUT -m state --state INVALID -j DROP -m comment --comment "Drop invalid INPUT packets"
 iptables -A OUTPUT -m state --state INVALID -j DROP -m comment --comment "Drop invalid OUTPUT packets"
 iptables -A FORWARD -m state --state INVALID -j DROP -m comment --comment "Drop invalid FORWARD packets"
 
@@ -59,13 +57,13 @@ iptables -A INPUT -p icmp --icmp-type 17 -j DROP -m comment --comment "Drop Addr
 iptables -A INPUT -p icmp --icmp-type 14 -j DROP -m comment --comment "Drop Timestamp reply"
 iptables -A INPUT -p icmp -m limit --limit 1/second -j ACCEPT
 
-iptables –A INPUT –p tcp –syn -m multiport -–dport $HTTP,$HTTPS –m connlimit -–connlimit-above 20 –j REJECT -–reject-with-tcp-reset
+iptables -A INPUT -p tcp -syn -m multiport --dport $HTTP,$HTTPS -m connlimit --connlimit-above 20 -j REJECT --reject-with-tcp-reset
 
 iptables -A OUTPUT -p tcp --sport $HTTP -m conntrack --ctstate ESTABLISHED -j ACCEPT -m comment --comment "Allow outgoing HTTP"
 iptables -A OUTPUT -p tcp --sport $HTTPS -m conntrack --ctstate ESTABLISHED -j ACCEPT -m comment --comment "Allow outgoing HTTPS"
 
-for ip in `curl https://www.cloudflare.com/ips-v4`; do 
-    iptables -I INPUT -p tcp -m multiport --dports $HTTP,$HTTPS -s $ip -j ACCEPT -m comment --comment "Allow Cloudflare network ip ${ip}";
+for ip in $(curl https://www.cloudflare.com/ips-v4); do
+    iptables -I INPUT -p tcp -m multiport --dports $HTTP,$HTTPS -s $ip -j ACCEPT -m comment --comment "Allow Cloudflare network ip ${ip}"
 done
 
 iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP -m comment --comment "Force SYN packets check"
@@ -115,8 +113,7 @@ iptables -A INPUT -p tcp -m tcp --dport 139 -m recent --name portscan --set -j D
 iptables -A FORWARD -p tcp -m tcp --dport 139 -m recent --name portscan --set -j LOG --log-prefix "Portscan:"
 iptables -A FORWARD -p tcp -m tcp --dport 139 -m recent --name portscan --set -j DROP
 
-
 iptables -A INPUT -j DROP
 iptables -A OUTPUT -j DROP
 
-iptables-save > /etc/iptables/rules.v4
+iptables-save >/etc/iptables/rules.v4
