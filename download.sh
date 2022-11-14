@@ -13,6 +13,8 @@ for app in ${SOFTWARE[*]}; do
         load_spinner
         sub_message "$app"
         # apt --assume-yes install $app &> /dev/null
+        # apt --assume-yes install $app &> ${LOG_FILE}
+        apt --assume-yes install $app
         # apt --assume-yes install $app
     fi
     
@@ -22,13 +24,15 @@ for app in ${SOFTWARE[*]}; do
             load_spinner
             sub_message $app"-"$lib
             # apt --assume-yes install $app'-'$lib &> /dev/null
-            apt --assume-yes install $app'-'$lib
+            apt --assume-yes install $app'-'$lib &> ${LOG_FILE}
+            # apt --assume-yes install $app'-'$lib
         done
         task_done "Software installed"
     fi
 done
 
 echo "Install mod_security"
-apt install libapache2-mod-security
+yes | apt install libapache2-mod-security2
 echo "Install mod_evasive"
-apt install libapache2-mod-evasive
+yes | apt install libapache2-mod-evasive
+

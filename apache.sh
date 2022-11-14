@@ -374,7 +374,43 @@ fi
     fi
 }
 
+if [ -d "/etc/modsecurity/" ]; then
+    echo "- Configure mod_security2"
 
+    cp /etc/modsecurity/modsecurity.conf{-recommended,}
+    sed -i "s/SecRuleEngine DetectionOnly/SecRuleEngine on/g" /etc/modsecurity/modsecurity.conf
+fi
 
+# Download OWASP rules
+git clone https://github.com/SpiderLabs/owasp-modsecurity-crs.git /usr/share/modsecurity-crs
+
+cp -irf /usr/share/modsecurity-crs/crs-setup.conf{.example,}
+
+if [ -f "${MOD_SECURITY_2}" ]; then
+echo "
+<IfModule security2_module>
+        # Default Debian dir for modsecurity's persistent data
+        SecDataDir /var/cache/modsecurity
+
+        # Include all the *.conf files in /etc/modsecurity.
+        # Keeping your local configuration in that directory
+        # will allow for an easy upgrade of THIS file and
+        # make your life easier
+        IncludeOptional /etc/modsecurity/*.conf
+
+        # Include OWASP ModSecurity CRS rules if installed
+        IncludeOptional /usr/share/modsecurity-crs/*.load
+        # from configuration
+</IfModule>
+"  > ${MOD_SECURITY_2}
+fi
+
+if [ -f "${MOD_QOS}" ]; then
+    echo "- Configure mod_qos"
+
+    sed -i "s/#QS_SrvRequestRate/QS_SrvRequestRate/g" ${MOD_QOS}
+    sed -i "s/#QS_SrvMaxConn/QS_SrvMaxConn/g" ${MOD_QOS}
+    sed -i "s/#QS_SrvMaxConnClose/QS_SrvMaxConnClose/g" ${MOD_QOS}
+    sed -i "s/#QS_SrvMaxConnPerIP/QS_SrvMaxConnPerIP/g" ${MOD_QOS}
+fi
 # systemctl restart apache2.service
-

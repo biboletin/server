@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /home/${USER}/Documents
-iptables-save >iptables_default_${TODAY}.rules
+iptables-save > iptables_default_${TODAY}.rules
 
 iptables -P INPUT ACCEPT
 iptables -P OUTPUT ACCEPT
@@ -36,7 +36,7 @@ if [ "true" == "${IS_ROUTER}" ]; then
     else
         echo 'net.ipv4.ip_forward=1' >>/etc/sysctl.conf
     fi
-
+    
     iptables -t nat -A POSTROUTING -j MASQUERADE
     iptables -A FORWARD -i $SECOND_NETWORK_INTERFACE -o $MAIN_NETWORK_INTERFACE -j ACCEPT -m comment --comment "Allow internal network to access external"
 fi
@@ -57,7 +57,7 @@ iptables -A INPUT -p icmp --icmp-type 17 -j DROP -m comment --comment "Drop Addr
 iptables -A INPUT -p icmp --icmp-type 14 -j DROP -m comment --comment "Drop Timestamp reply"
 iptables -A INPUT -p icmp -m limit --limit 1/second -j ACCEPT
 
-iptables -A INPUT -p tcp -syn -m multiport --dport $HTTP,$HTTPS -m connlimit --connlimit-above 20 -j REJECT --reject-with-tcp-reset
+iptables -A INPUT -p tcp --syn -m multiport --dport $HTTP,$HTTPS -m connlimit --connlimit-above 20 -j REJECT --reject-with tcp-reset
 
 iptables -A OUTPUT -p tcp --sport $HTTP -m conntrack --ctstate ESTABLISHED -j ACCEPT -m comment --comment "Allow outgoing HTTP"
 iptables -A OUTPUT -p tcp --sport $HTTPS -m conntrack --ctstate ESTABLISHED -j ACCEPT -m comment --comment "Allow outgoing HTTPS"

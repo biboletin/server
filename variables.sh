@@ -27,6 +27,8 @@ GIT_PASSWORD=""
 APACHE2_CONF="/etc/apache2/apache2.conf"
 MOD_EVASIVE="/etc/apache2/mods-available/evasive.conf"
 MOD_SECURITY="/etc/apache2/conf-available/security.conf"
+MOD_SECURITY_2="/etc/apache2/mods-available/security2.conf"
+MOD_QOS="/etc/apache2/mods-available/qos.conf"
 PHP_74_CONF="/etc/php/7.4"
 PHP_80_CONF="/etc/php/8.0"
 PHP_81_CONF="/etc/php/8.1"
@@ -35,11 +37,11 @@ SESSION_NAME="PHPSESSID"
 # network
 IS_ROUTER="false"
 # 192.168.0.1
-SERVER_IP="1.1.1.1"
+SERVER_IP="192.168.1.8"
 # 1.2.3.4
-EXTERNAL_IP="1.1.1.1"
+EXTERNAL_IP="149.62.238.205"
 # 192.168.0.0/24
-INTERNAL_NETWORK="1.1.1.1"
+INTERNAL_NETWORK="192.168.1.0/24"
 # eno1
 MAIN_NETWORK_INTERFACE=$(route | grep '^default' | grep -o '[^ ]*$')
 SECOND_NETWORK_INTERFACE="enp0s3"
@@ -60,7 +62,7 @@ VIRTUALMIN=10000
 USERMIN=20000
 
 
-# Directories
+# Create directories
 DIRS=(
     "Downloads"
     "Documents"

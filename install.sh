@@ -12,7 +12,15 @@ banner
 
 source variables.sh
 
-
+create_directories() {
+    for dir in "${DIRS[@]}"; do
+    main_message "Create $dir"
+        if [ ! -d "${dir}" ]; then
+            mkdir -p /home/${USER}/$dir
+            chown -R ${USER}:${GROUP} /home/${USER}/${dir}
+        fi
+    done
+}
 install_software() {
     main_message "Installing software"
     source download.sh
@@ -44,14 +52,14 @@ backup_files() {
 # yes | apt update
 # yes | apt upgrade
 
-# configure_iptables
 
-
+# !!!! first this
+# create_directories
 
 # install_software
 # configure_iptables
 # backup_files
-# configure_apache
+configure_apache
 
 # configure_filesystem
 
