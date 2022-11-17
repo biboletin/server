@@ -45,6 +45,9 @@ backup_files() {
     main_message "All files are with prefix \"backup.\" in their corresponding directory"
 }
 
+configure_files() {
+    source configure.sh
+}
 
 
 # source permissions.sh
@@ -53,17 +56,16 @@ backup_files() {
 # yes | apt upgrade
 
 
-# !!!! first this
 # create_directories
-
 # install_software
 # configure_iptables
 # backup_files
-configure_apache
+# configure_apache
+
+configure_files
+# configure_permissions
 
 # configure_filesystem
-
-# configure_permissions
 
 
 # yes | apt update
