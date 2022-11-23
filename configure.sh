@@ -37,8 +37,9 @@ load_spinner
 main_message "Set UMASK to 027"
 
 sub_message "/etc/login.defs"
-sed -i "s/UMASK           022/UMASK           027/g" /etc/login.defs
+sed -i "s|UMASK           022|UMASK    027|g" /etc/login.defs
 
 sub_message "~/.bashrc"
+echo "umask 027" >> ~/.bashrc
 
 load_spinner

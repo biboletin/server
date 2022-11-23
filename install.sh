@@ -49,6 +49,15 @@ configure_files() {
     source configure.sh
 }
 
+install_composer() {
+    main_message "Install and configure composer"
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    rm composer-setup.php
+}
+
+
+
 
 # source permissions.sh
 
@@ -58,6 +67,7 @@ configure_files() {
 
 # create_directories
 # install_software
+# install_composer
 # configure_iptables
 # backup_files
 # configure_apache

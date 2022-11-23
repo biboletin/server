@@ -107,6 +107,7 @@ SOFTWARE=(
     "psad"
     "aide"
     "redis"
+    "unzip"
 )
 
 # Install php extensions
@@ -144,4 +145,3 @@ APACHE_MODULES=(
     "dir"
     "mime"
 )
-
