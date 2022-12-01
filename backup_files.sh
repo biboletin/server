@@ -52,6 +52,17 @@ cp /etc/vsftpd.conf /etc/backup.vsftpd.conf
 echo "/etc/redis/redis.conf"
 cp /etc/redis/redis.conf /etc/redis/backup.redis.conf
 
+echo "/etc/varnish/default.vcl"
+cp /etc/varnish/default.vcl /etc/varnish/backup.default.vcl
+
+echo "/etc/ssh/sshd_config"
+cp /etc/ssh/sshd_config /etc/ssh/backup.sshd_config
+
+echo "/etc/fail2ban/jail.conf"
+cp /etc/fail2ban/jail.conf /etc/fail2ban/backup.jail.conf
+echo "Create jail.local"
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+cp /etc/fail2ban/jail.local /etc/fail2ban/backup.jail.local
 
 # create_copy "/etc/hosts"
 # create_copy "/etc/hostname"

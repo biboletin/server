@@ -25,8 +25,8 @@ load_spinner
 
 main_message "Set permissions /etc/issue /etc/issue.net"
 
-sub_message "/etc/issue"
-sub_message "/etc/issue.net"
+echo "- /etc/issue"
+echo "- /etc/issue.net"
 chown root:root /etc/issue
 chmod 644 /etc/issue
 chown root:root /etc/issue.net
@@ -36,10 +36,38 @@ load_spinner
 
 main_message "Set UMASK to 027"
 
-sub_message "/etc/login.defs"
+echo "- /etc/login.defs"
 sed -i "s|UMASK           022|UMASK    027|g" /etc/login.defs
 
-sub_message "~/.bashrc"
+echo  "- ~/.bashrc"
 echo "umask 027" >> ~/.bashrc
 
+load_spinner
+
+main_message "Configure SSH"
+sed -i "s/#Port 22/Port ${SSH}/g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+# sed -i "s///g" /etc/ssh/sshd_config
+
+load_spinner
+
+main_message "Configure Fail2Ban"
+load_spinner
+
+main_message "Configure Redis"
+load_spinner
+
+main_message "Configure Varnish"
 load_spinner
