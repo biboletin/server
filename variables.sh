@@ -11,8 +11,6 @@ HOME="/home/${USER}"
 DOCUMENTS=${HOME}/Documents
 LOG_FILE="/var/log/install_script.log"
 
-
-
 # web
 WEB_ROOT="/var/www/html"
 HOST_NAME="example"
@@ -23,6 +21,20 @@ SITE_ADDR="https://${SITE_NAME}"
 # if needed
 GIT_USER=""
 GIT_PASSWORD=""
+
+# zabbix
+ZABBIX_DB=""
+ZABBIX_USER=""
+ZABBIX_PASSWORD=""
+# varnish
+VARNISH_HOST=""
+# proftp
+PROFTP_PORT=""
+# mod security
+MOD_SECURITY_WHITELIST_LAN="192.168.0.0/24"
+# public ip address
+MOD_SECURITY_WHITELIST_REGEX="^@\.@\.@\.@"
+
 
 APACHE2_CONF="/etc/apache2/apache2.conf"
 MOD_EVASIVE="/etc/apache2/mods-available/evasive.conf"
@@ -80,6 +92,7 @@ SOFTWARE=(
     "php7.4"
     "php8.0"
     "php8.1"
+    "php8.2"
     "libapache2-mod-security2"
     "libapache2-mod-evasive"
     "libapache2-mod-qos"

@@ -89,7 +89,7 @@ before = paths-debian.conf
 # "ignoreip" can be a list of IP addresses, CIDR masks or DNS hosts. Fail2ban
 # will not ban a host which matches an address in this list. Several addresses
 # can be defined using space (and/or comma) separator.
-#ignoreip = 127.0.0.1/8 ::1
+ignoreip = 127.0.0.1/8 ::1 192.168.1.0/24 94.158.26.30
 
 # External command that will take an tagged arguments to ignore, e.g. <ip>,
 # and return true if the IP is to be ignored. False otherwise.
@@ -98,14 +98,14 @@ before = paths-debian.conf
 ignorecommand =
 
 # "bantime" is the number of seconds that a host is banned.
-bantime  = 10m
+bantime  = -1
 
 # A host is banned if it has generated "maxretry" during the last "findtime"
 # seconds.
 findtime  = 10m
 
 # "maxretry" is the number of failures before a host get banned.
-maxretry = 5
+maxretry = 3
 
 # "maxmatches" is the number of matches stored in ticket (resolvable via tag <matches> in actions).
 maxmatches = %(maxretry)s
@@ -282,21 +282,25 @@ action = %(action_)s
 # normal (default), ddos, extra or aggressive (combines all).
 # See "tests/files/logs/sshd" or "filter.d/sshd.conf" for usage example and details.
 #mode   = normal
-port    = ssh
+enabled = true
+#port    = ssh
+port    = 2232
 logpath = %(sshd_log)s
 backend = %(sshd_backend)s
 
 
 [dropbear]
 
-port     = ssh
+#port     = ssh
+port     = 2232
 logpath  = %(dropbear_log)s
 backend  = %(dropbear_backend)s
 
 
 [selinux-ssh]
 
-port     = ssh
+#port     = ssh
+port     = 2232
 logpath  = %(auditd_log)s
 
 
@@ -304,8 +308,14 @@ logpath  = %(auditd_log)s
 # HTTP servers
 #
 
-[apache-auth]
+[apache-phpmyadmin]
+enabled  = true
+filter   = apache-phpmyadmin
+port     = http,https
+logpath  = %(apache_error_log)s
 
+[apache-auth]
+enabled  = true
 port     = http,https
 logpath  = %(apache_error_log)s
 
@@ -313,6 +323,7 @@ logpath  = %(apache_error_log)s
 [apache-badbots]
 # Ban hosts which agent identifies spammer robots crawling the web
 # for email addresses. The mail outputs are buffered.
+enabled  = true
 port     = http,https
 logpath  = %(apache_access_log)s
 bantime  = 48h
@@ -320,34 +331,34 @@ maxretry = 1
 
 
 [apache-noscript]
-
+enabled  = true
 port     = http,https
 logpath  = %(apache_error_log)s
 
 
 [apache-overflows]
-
+enabled  = true
 port     = http,https
 logpath  = %(apache_error_log)s
 maxretry = 2
 
 
 [apache-nohome]
-
+enabled  = true
 port     = http,https
 logpath  = %(apache_error_log)s
 maxretry = 2
 
 
 [apache-botsearch]
-
+enabled  = true
 port     = http,https
 logpath  = %(apache_error_log)s
 maxretry = 2
 
 
 [apache-fakegooglebot]
-
+enabled  = true
 port     = http,https
 logpath  = %(apache_access_log)s
 maxretry = 1
@@ -355,14 +366,14 @@ ignorecommand = %(ignorecommands_dir)s/apache-fakegooglebot <ip>
 
 
 [apache-modsecurity]
-
+enabled  = true
 port     = http,https
 logpath  = %(apache_error_log)s
 maxretry = 2
 
 
 [apache-shellshock]
-
+enabled = true
 port    = http,https
 logpath = %(apache_error_log)s
 maxretry = 1
@@ -400,7 +411,7 @@ maxretry = 2
 # of usage in production environments.
 
 [php-url-fopen]
-
+enabled = true
 port    = http,https
 logpath = %(nginx_access_log)s
           %(apache_access_log)s
@@ -487,7 +498,7 @@ logpath  = /var/log/monit
 
 
 [webmin-auth]
-
+enabled = true
 port    = 10000
 logpath = %(syslog_authpriv)s
 backend = %(syslog_backend)s
@@ -523,7 +534,7 @@ logpath = /var/log/3proxy.log
 
 
 [proftpd]
-
+enabled  = true
 port     = ftp,ftp-data,ftps,ftps-data
 logpath  = %(proftpd_log)s
 backend  = %(proftpd_backend)s
@@ -579,6 +590,7 @@ backend  = %(syslog_backend)s
 
 [postfix]
 # To use another modes set filter parameter "mode" in jail.local:
+enabled = true
 mode    = more
 port    = smtp,465,submission
 logpath = %(postfix_log)s
@@ -621,7 +633,7 @@ logpath = /service/qmail/log/main/current
 # dovecot defaults to logging to the mail syslog facility
 # but can be set by syslog_facility in the dovecot configuration.
 [dovecot]
-
+enabled = true
 port    = pop3,pop3s,imap,imaps,submission,465,sieve
 logpath = %(dovecot_log)s
 backend = %(dovecot_backend)s
@@ -672,7 +684,7 @@ backend  = %(syslog_backend)s
 
 
 [postfix-sasl]
-
+enabled  = true
 filter   = postfix[mode=auth]
 port     = smtp,465,submission,imap,imaps,pop3,pop3s
 # You might consider monitoring /var/log/mail.warn instead if you are
