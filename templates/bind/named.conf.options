@@ -1,3 +1,25 @@
+acl "trusted_transfer" {
+	none;
+};
+
+acl bogusnets {
+    0.0.0.0/8;
+	192.0.2.0/24;
+	224.0.0.0/3;
+    10.0.0.0/8;
+	172.16.0.0/12;
+	192.168.0.0/16;
+};
+
+acl "trusted_clients" {
+	// localhost
+	// 127.0.0.0/8;
+	127.0.0.1;
+	// lan
+	INTERNAL_NETWORK;
+};
+
+
 options {
 	directory "/var/cache/bind";
 
@@ -10,16 +32,68 @@ options {
 	// Uncomment the following block, and insert the addresses replacing 
 	// the all-0's placeholder.
 
-	// forwarders {
-	// 	0.0.0.0;
-	// };
+	forwarders {
+		// router
+		// 192.168.1.1
+		// cloudflare
+		// 1.1.1.1;
+		// 1.0.0.1;
+		// google
+		// 8.8.8.8;
+		// 8.8.4.4;
+	};
 
 	//========================================================================
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys
 	//========================================================================
 	dnssec-enable yes;
-	dnssec-validation auto;
+	// dnssec-validation auto;
+	dnssec-validation yes;
 
 	listen-on-v6 { any; };
+
+	listen-on {
+		127.0.0.1;
+		INTERNAL_NETWORK;
+		SERVER_IP;
+	};
+
+	notify no;
+
+	allow-query {
+		trusted_clients;
+	};
+	allow-query-cache {
+		trusted_clients;
+	};
+	allow-recursion {
+		trusted_clients;
+	};
+	allow-transfer {
+		none;
+	};
+	allow-update {
+		none;
+	};
+	blackhole {
+		bogusnets;
+	};
+	auth-nxdomain no;
+	empty-zones-enable yes;
+	recursion yes;
+
+
+
+	version "none";
+};
+
+logging {
+	channel log {
+		file "/var/log/named/named.log" versions 3 size 250k;
+	};
+
+	category default {
+		log;
+	};
 };

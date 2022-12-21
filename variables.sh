@@ -5,10 +5,10 @@
 # main
 TODAY=$(date +"%Y_%m_%d")
 PASSWORD=`openssl rand 60 | openssl base64 -A`
-USER="brcomp"
-GROUP="brcomp"
+USER="user"
+GROUP="user"
 HOME="/home/${USER}"
-DOCUMENTS=${HOME}/Documents
+DOCUMENTS="${HOME}/Documents"
 LOG_FILE="/var/log/install_script.log"
 
 # web
@@ -21,6 +21,7 @@ SITE_ADDR="https://${SITE_NAME}"
 # if needed
 GIT_USER=""
 GIT_PASSWORD=""
+MYSQL_PASSWORD=""
 
 # zabbix
 ZABBIX_DB=""
@@ -28,8 +29,7 @@ ZABBIX_USER=""
 ZABBIX_PASSWORD=""
 # varnish
 VARNISH_HOST=""
-# proftp
-PROFTP_PORT=""
+
 # mod security
 MOD_SECURITY_WHITELIST_LAN="192.168.0.0/24"
 # public ip address
@@ -60,8 +60,8 @@ SECOND_NETWORK_INTERFACE="enp0s3"
 LOOPBACK="lo"
 
 # ports
-SSH=2232
-VSFTP=21
+SSH=22
+PROFTP=21
 HTTP=80
 HTTPS=443
 SMTP=25

@@ -12,5 +12,7 @@ zone "DOMAIN_NAME" {
 	allow-transfer {
 		127.0.0.1;
 		localnets;
-		};
 	};
+};
+
+

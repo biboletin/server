@@ -156,7 +156,7 @@ sub vcl_backend_response {
     set beresp.http.Content-Security-Policy = "default-src 'self' *.DOMAIN_NAME; script-src 'self' *.DOMAIN_NAME";
     set beresp.http.X-Permitted-Cross-Domain-Policies = "none";
     set beresp.http.Referrer-Policy = "strict-origin";
-#    set beresp.http.Feature-Policy = \""camera: 'none'; vr: 'none'; microphone: 'none';  payment: 'none'; midi: 'none'; microphone: 'none'\""
+    # set beresp.http.Feature-Policy = \""camera: 'none'; vr: 'none'; microphone: 'none';  payment: 'none'; midi: 'none'; microphone: 'none'\""
 }
 
 sub vcl_deliver {

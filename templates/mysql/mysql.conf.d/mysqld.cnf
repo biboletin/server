@@ -1,16 +1,83 @@
 [mysqld]
-user		= mysql
-bind-address		= 127.0.0.1
+; user = mysql
+user = root
+host = 127.0.0.1
+password="MYSQL_PASSWORD"
+port = 3306
+tmpdir = /tmp
+symbolic-links = 0
+
+bind-address = 127.0.0.1
 mysqlx-bind-address	= 127.0.0.1
-key_buffer_size = 384M
-myisam-recover-options  = BACKUP
+
+skip-external-locking
+skip-name-resolve
+skip-networking
+
 log_error = /var/log/mysql/error.log
 max_binlog_size   = 100M
-innodb_file_per_table = 1
+
+
+key_buffer_size = 384M
 max_allowed_packet = 64M
 thread_cache_size = 8
-myisam_sort_buffer_size = 64M
 read_rnd_buffer_size = 8M
-read_buffer_size = 2M
-sort_buffer_size = 2M
+read_buffer_size = 16M
+sort_buffer_size = 16M
+join_buffer_size = 16M
 table_open_cache = 512
+sql-mode = "STRICT_TRANS_TABLES,
+    ERROR_FOR_DIVISION_BY_ZERO,
+    NO_AUTO_CREATE_USER,
+    NO_AUTO_VALUE_ON_ZERO,
+    NO_ENGINE_SUBSTITUTION,
+    NO_ZERO_DATE,
+    NO_ZERO_IN_DATE,
+    ONLY_FULL_GROUP_BY"
+; default_time_zone = "Europe/Sofia"
+; time_zone = "Europe/Sofia"
+default-time-zone = "+02:00"
+
+
+; MyISAM
+myisam-recover-options = BACKUP
+myisam_sort_buffer_size = 64M
+query_cache_type = 1
+query_cache_size = 64M
+query_cache_limit= 4M
+ft_min_word_len = 3
+low_priority_updates = 1
+concurrent_insert = 2
+
+
+; InnoDB
+default_storage_engine = InnoDB
+innodb_buffer_pool_instances = 5
+innodb_file_per_table = 1
+innodb_buffer_pool_size = 2G
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method = O_DIRECT
+innodb_log_buffer_size = 64M
+innodb_log_file_size = 512M
+innodb_stats_on_metadata = 0
+innodb_temp_data_file_path = 3
+innodb_read_io_threads = 64
+innodb_write_io_threads = 64
+innodb_ft_min_token_size = 3
+
+; Log slow queries
+log_slow_queries = 1 
+slow_query_log = 1
+slow_query_log_file = "/var/log/mysql/slow.log"
+log_queries_not_using_indexes = 1
+long_query_time = 5
+
+
+; Encoding
+character-set-server = utf8mb4
+collation-server = utf8mb4_unicode_ci
+
+; Connections
+max_connections = 100
+
+server-id = 1

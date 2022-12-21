@@ -1,6 +1,9 @@
 #!/bin/bash
 
-a2enmod headers rewrite ssl evasive proxy envvars http2 qos &> ${LOG_FILE}
+a2enmod headers rewrite ssl evasive proxy envvars http2 remoteip qos &> ${LOG_FILE}
+a2disconf apache2-doc
+a2dismod info status
+
 # a2enconf php7.4-fpm
 
 # Set DH algorithms

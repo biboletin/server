@@ -1,4 +1,7 @@
 [mysqldump]
+user = root
+host = localhost
+password="MYSQL_PASSWORD"
 quick
 quote-names
-max_allowed_packet	= 16M
+max_allowed_packet	= 128M
