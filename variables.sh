@@ -36,6 +36,20 @@ MOD_SECURITY_WHITELIST_LAN="192.168.0.0/24"
 MOD_SECURITY_WHITELIST_REGEX="^@\.@\.@\.@"
 
 
+
+# certificates
+
+COUNTRY="BG"
+STATE="country"
+LOCALITY="city"
+ORGANISATION="name"
+ORGANISATION_UNIT="name "
+COMMON_NAME=${DOMAIN_NAME}
+EMAIL=""
+
+
+
+
 APACHE2_CONF="/etc/apache2/apache2.conf"
 MOD_EVASIVE="/etc/apache2/mods-available/evasive.conf"
 MOD_SECURITY="/etc/apache2/conf-available/security.conf"
@@ -101,6 +115,7 @@ SOFTWARE=(
     "git"
     "fail2ban"
     "certbot"
+    "python3-certbot-apache"
     "letsencrypt"
     "auditd"
     "sysstat"
