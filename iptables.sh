@@ -116,4 +116,4 @@ iptables -A FORWARD -p tcp -m tcp --dport 139 -m recent --name portscan --set -j
 iptables -A INPUT -j DROP
 iptables -A OUTPUT -j DROP
 
-iptables-save >/etc/iptables/rules.v4
+iptables-save > /etc/iptables/rules.v4

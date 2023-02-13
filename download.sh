@@ -18,14 +18,12 @@ for app in ${SOFTWARE[*]}; do
         # apt --assume-yes install $app
     fi
     
-    if [ "php7.4" == $app ] || [ "php8.0" == $app ] || [ "php8.1" == $app ]; then
+    if [ "php8.0" == $app ] || [ "php8.1" == $app ] || [ "php8.2" == $app ]; then
         main_message "Installing ${app} extensions"
         for lib in ${PHP_EXTENSIONS[*]}; do
             load_spinner
             sub_message $app"-"$lib
-            # apt --assume-yes install $app'-'$lib &> /dev/null
             apt --assume-yes install $app'-'$lib &> ${LOG_FILE}
-            # apt --assume-yes install $app'-'$lib
         done
         task_done "Software installed"
     fi

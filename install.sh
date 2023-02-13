@@ -1,10 +1,10 @@
 #!/bin/bash
 
 
-# if [[ $EUID -ne 0 ]]; then
-#     echo "This script must be run as root"
-#     exit 1
-# fi
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root"
+    exit 1
+fi
 
 source helpers.sh
 
@@ -21,10 +21,19 @@ create_directories() {
         fi
     done
 }
+
 install_software() {
     main_message "Installing software"
     source download.sh
 }
+
+install_composer() {
+    main_message "Install and configure composer"
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    rm composer-setup.php
+}
+
 
 configure_iptables() {
     main_message "Configure iptables"
@@ -49,30 +58,23 @@ configure_files() {
     source configure.sh
 }
 
-install_composer() {
-    main_message "Install and configure composer"
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-    rm composer-setup.php
-}
-
-
 
 
 # source permissions.sh
 
-# yes | apt update
-# yes | apt upgrade
+yes | add-apt-repository ppa:ondrej/php
+yes | apt update
+yes | apt upgrade
 
 
-# create_directories
+create_directories
 # install_software
 # install_composer
 # configure_iptables
 # backup_files
 # configure_apache
 
-configure_files
+# configure_files
 # configure_permissions
 
 # configure_filesystem

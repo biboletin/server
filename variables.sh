@@ -5,18 +5,18 @@
 # main
 TODAY=$(date +"%Y_%m_%d")
 PASSWORD=`openssl rand 60 | openssl base64 -A`
-USER="user"
-GROUP="user"
+USER="brcomp"
+GROUP="brcomp"
 HOME="/home/${USER}"
 DOCUMENTS="${HOME}/Documents"
 LOG_FILE="/var/log/install_script.log"
 
 # web
 WEB_ROOT="/var/www/html"
-HOST_NAME="example"
-DOMAIN_NAME="example.com"
+HOST_NAME="biboletin"
+DOMAIN_NAME="biboletin.eu"
 MAIL_DOMAIN_NAME="mail.${DOMAIN_NAME}"
-SITE_NAME="example.com"
+SITE_NAME="biboletin.eu"
 SITE_ADDR="https://${SITE_NAME}"
 # if needed
 GIT_USER=""
@@ -63,14 +63,14 @@ SESSION_NAME="PHPSESSID"
 # network
 IS_ROUTER="false"
 # 192.168.0.1
-SERVER_IP="192.168.1.8"
+SERVER_IP="192.168.1.23"
 # 1.2.3.4
 EXTERNAL_IP="149.62.238.205"
 # 192.168.0.0/24
 INTERNAL_NETWORK="192.168.1.0/24"
 # eno1
 MAIN_NETWORK_INTERFACE=$(route | grep '^default' | grep -o '[^ ]*$')
-SECOND_NETWORK_INTERFACE="enp0s3"
+SECOND_NETWORK_INTERFACE=""
 LOOPBACK="lo"
 
 # ports
@@ -103,8 +103,6 @@ SOFTWARE=(
     "apache2"
     "mariadb-server"
     "php"
-    "php7.4"
-    "php8.0"
     "php8.1"
     "php8.2"
     "libapache2-mod-security2"
