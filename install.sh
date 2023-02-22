@@ -67,10 +67,10 @@ yes | apt update
 yes | apt upgrade
 
 
-create_directories
+# create_directories
 # install_software
 # install_composer
-# configure_iptables
+configure_iptables
 # backup_files
 # configure_apache
 

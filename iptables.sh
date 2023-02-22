@@ -1,6 +1,12 @@
 #!/bin/bash
 
-cd /home/${USER}/Documents
+if [ ! -d "/home/${USER}/Documents" ]; then
+    mkdir /home/${USER}/Documents
+    cd /home/${USER}/Documents
+else 
+    cd /home/${USER}/Documents
+fi
+
 iptables-save > iptables_default_${TODAY}.rules
 
 iptables -P INPUT ACCEPT
@@ -57,7 +63,7 @@ iptables -A INPUT -p icmp --icmp-type 17 -j DROP -m comment --comment "Drop Addr
 iptables -A INPUT -p icmp --icmp-type 14 -j DROP -m comment --comment "Drop Timestamp reply"
 iptables -A INPUT -p icmp -m limit --limit 1/second -j ACCEPT
 
-iptables -A INPUT -p tcp --syn -m multiport --dport $HTTP,$HTTPS -m connlimit --connlimit-above 20 -j REJECT --reject-with tcp-reset
+iptables -A INPUT -p tcp --syn -m multiport --dports $HTTP,$HTTPS -m connlimit --connlimit-above 20 -j REJECT --reject-with tcp-reset
 
 iptables -A OUTPUT -p tcp --sport $HTTP -m conntrack --ctstate ESTABLISHED -j ACCEPT -m comment --comment "Allow outgoing HTTP"
 iptables -A OUTPUT -p tcp --sport $HTTPS -m conntrack --ctstate ESTABLISHED -j ACCEPT -m comment --comment "Allow outgoing HTTPS"

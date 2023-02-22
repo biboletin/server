@@ -5,18 +5,23 @@
 # main
 TODAY=$(date +"%Y_%m_%d")
 PASSWORD=`openssl rand 60 | openssl base64 -A`
-USER="brcomp"
-GROUP="brcomp"
+# admin
+USER=""
+# root
+GROUP=""
 HOME="/home/${USER}"
 DOCUMENTS="${HOME}/Documents"
 LOG_FILE="/var/log/install_script.log"
 
 # web
 WEB_ROOT="/var/www/html"
-HOST_NAME="biboletin"
-DOMAIN_NAME="biboletin.eu"
+# example
+HOST_NAME=""
+# example.com
+DOMAIN_NAME=""
 MAIL_DOMAIN_NAME="mail.${DOMAIN_NAME}"
-SITE_NAME="biboletin.eu"
+# example.com
+SITE_NAME=""
 SITE_ADDR="https://${SITE_NAME}"
 # if needed
 GIT_USER=""
@@ -63,11 +68,11 @@ SESSION_NAME="PHPSESSID"
 # network
 IS_ROUTER="false"
 # 192.168.0.1
-SERVER_IP="192.168.1.23"
+SERVER_IP=""
 # 1.2.3.4
-EXTERNAL_IP="149.62.238.205"
+EXTERNAL_IP=""
 # 192.168.0.0/24
-INTERNAL_NETWORK="192.168.1.0/24"
+INTERNAL_NETWORK=""
 # eno1
 MAIN_NETWORK_INTERFACE=$(route | grep '^default' | grep -o '[^ ]*$')
 SECOND_NETWORK_INTERFACE=""
