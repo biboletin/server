@@ -45,11 +45,11 @@ MOD_SECURITY_WHITELIST_REGEX="^@\.@\.@\.@"
 # certificates
 
 COUNTRY="BG"
-STATE="country"
-LOCALITY="city"
-ORGANISATION="name"
-ORGANISATION_UNIT="name "
-COMMON_NAME=${DOMAIN_NAME}
+STATE="Bulgaria"
+LOCALITY="Sofia"
+ORGANISATION="biboletin"
+ORGANISATION_UNIT="biboletin"
+COMMON_NAME="${DOMAIN_NAME}"
 EMAIL=""
 
 
