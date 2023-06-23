@@ -99,9 +99,10 @@ DIRS=(
 )
 # Install software
 SOFTWARE=(
+    "net-tools"
     "wget"
-    "curl"
     "software-properties-common"
+    "curl"
     "apache2"
     "mariadb-server"
     "php"
@@ -122,7 +123,6 @@ SOFTWARE=(
     "chkrootkit"
     "clamav"
     "redis-server"
-    "net-tools"
     "postfix"
     "mailutils"
     "vsftpd"

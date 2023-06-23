@@ -12,10 +12,7 @@ for app in ${SOFTWARE[*]}; do
     then
         load_spinner
         sub_message "$app"
-        # apt --assume-yes install $app &> /dev/null
-        # apt --assume-yes install $app &> ${LOG_FILE}
-        apt --assume-yes install $app
-        # apt --assume-yes install $app
+        apt --assume-yes install $app &> ${LOG_FILE}
     fi
     
     if [ "php8.0" == $app ] || [ "php8.1" == $app ] || [ "php8.2" == $app ]; then
