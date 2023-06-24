@@ -63,6 +63,7 @@ MOD_QOS="/etc/apache2/mods-available/qos.conf"
 PHP_74_CONF="/etc/php/7.4"
 PHP_80_CONF="/etc/php/8.0"
 PHP_81_CONF="/etc/php/8.1"
+PHP_82_CONF="/etc/php/8.2"
 SESSION_NAME="PHPSESSID"
 
 # network

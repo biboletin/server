@@ -112,8 +112,6 @@ if [ -f "$MOD_SECURITY" ]; then
 fi
 
 
-
-{
     if [ -f "${PHP_74_CONF}/apache2/php.ini" ]; then
         echo "- Configure php 7.4 apache"
         
@@ -133,9 +131,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_74_CONF}/apache2/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=2/g" ${PHP_74_CONF}/apache2/php.ini
     fi
-}
 
-{
     if [ -f "${PHP_74_CONF}/cgi/php.ini" ]; then
         echo "- Configure php 7.4 cgi"
         
@@ -155,9 +151,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_74_CONF}/cgi/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_74_CONF}/cgi/php.ini
     fi
-}
 
-{
     if [ -f "${PHP_74_CONF}/fpm/php.ini" ]; then
         echo "- Configure php 7.4 fpm"
         
@@ -177,9 +171,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_74_CONF}/fpm/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_74_CONF}/fpm/php.ini
     fi
-}
 
-{
     if [ -f "${PHP_74_CONF}/cli/php.ini" ]; then
         echo "- Configure php 7.4 cli"
         
@@ -199,9 +191,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_74_CONF}/cli/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_74_CONF}/cli/php.ini
     fi
-}
 
-{
     if [ -d "${PHP_80_CONF}/apache/" ]; then
         echo "- Configure php 8.0 apache"
         
@@ -221,9 +211,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_80_CONF}/apache2/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_80_CONF}/apache2/php.ini
     fi
-}
 
-{
     if [ -d "${PHP_80_CONF}/cgi/" ]; then
         echo "- Configure php 8.0 cgi"
         
@@ -243,9 +231,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_80_CONF}/cgi/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_80_CONF}/cgi/php.ini
     fi
-}
 
-{
     if [ -d "${PHP_80_CONF}/fpm/" ]; then
         echo "- Configure php 8.0 fpm"
         
@@ -265,9 +251,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_80_CONF}/fpm/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_80_CONF}/fpm/php.ini
     fi
-}
 
-{
     if [ -d "${PHP_80_CONF}/cli/" ]; then
         echo "- Configure php 8.0 cli"
         
@@ -287,9 +271,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_80_CONF}/cli/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_80_CONF}/cli/php.ini
     fi
-}
 
-{
     if [ -d "${PHP_81_CONF}/apache/" ]; then
         echo "- Configure php 8.1 apache"
         
@@ -309,9 +291,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_81_CONF}/apache2/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_81_CONF}/apache2/php.ini
     fi
-}
 
-{
     if [ -d "${PHP_81_CONF}/fpm/" ]; then
         echo "- Configure php 8.1 fpm"
         
@@ -331,9 +311,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_81_CONF}/fpm/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_81_CONF}/fpm/php.ini
     fi
-}
 
-{
     if [ -d "${PHP_81_CONF}/cgi/" ]; then
         echo "- Configure php 8.1 cgi"
         
@@ -353,9 +331,7 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_81_CONF}/cgi/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_81_CONF}/cgi/php.ini
     fi
-}
 
-{
     if [ -d "${PHP_81_CONF}/cli/" ]; then
         echo "- Configure php 8.1 cli"
         
@@ -375,7 +351,88 @@ fi
         sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_81_CONF}/cli/php.ini
         sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_81_CONF}/cli/php.ini
     fi
-}
+################################################################################
+    if [ -d "${PHP_82_CONF}/apache/" ]; then
+        echo "- Configure php 8.1 apache"
+
+        sed -i "s/expose_php = On/expose_php = Off/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/max_execution_time = 30/max_execution_time = 120/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/memory_limit = 128M/memory_limit = 512M/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/post_max_size = 8M/post_max_size = 20M/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 10M/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/allow_url_fopen = On/allow_url_fopen = Off/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/;date.timezone =/date.timezone = Europe\/Sofia/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/session.use_strict_mode = 0/session.use_strict_mode = 1/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/session.name = PHPSESSID/session.name = ${SESSION_NAME}/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/session.cookie_httponly =/session.cookie_httponly = 1/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/session.cookie_samesite =/session.cookie_samesite = \"lax\"/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/;opcache.enable=1/opcache.enable=1/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/;opcache.memory_consumption=128/opcache.memory_consumption=128/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_81_CONF}/apache2/php.ini
+        sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_81_CONF}/apache2/php.ini
+    fi
+
+    if [ -d "${PHP_82_CONF}/fpm/" ]; then
+        echo "- Configure php 8.1 fpm"
+        
+        sed -i "s/expose_php = On/expose_php = Off/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/max_execution_time = 30/max_execution_time = 120/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/memory_limit = 128M/memory_limit = 512M/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/post_max_size = 8M/post_max_size = 20M/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 10M/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/allow_url_fopen = On/allow_url_fopen = Off/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/;date.timezone =/date.timezone = Europe\/Sofia/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/session.use_strict_mode = 0/session.use_strict_mode = 1/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/session.name = PHPSESSID/session.name = ${SESSION_NAME}/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/session.cookie_httponly =/session.cookie_httponly = 1/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/session.cookie_samesite =/session.cookie_samesite = \"lax\"/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/;opcache.enable=1/opcache.enable=1/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/;opcache.memory_consumption=128/opcache.memory_consumption=128/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_81_CONF}/fpm/php.ini
+        sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_81_CONF}/fpm/php.ini
+    fi
+
+    if [ -d "${PHP_82_CONF}/cgi/" ]; then
+        echo "- Configure php 8.1 cgi"
+        
+        sed -i "s/expose_php = On/expose_php = Off/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/max_execution_time = 30/max_execution_time = 120/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/memory_limit = 128M/memory_limit = 512M/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/post_max_size = 8M/post_max_size = 20M/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 10M/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/allow_url_fopen = On/allow_url_fopen = Off/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/;date.timezone =/date.timezone = Europe\/Sofia/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/session.use_strict_mode = 0/session.use_strict_mode = 1/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/session.name = PHPSESSID/session.name = ${SESSION_NAME}/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/session.cookie_httponly =/session.cookie_httponly = 1/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/session.cookie_samesite =/session.cookie_samesite = \"lax\"/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/;opcache.enable=1/opcache.enable=1/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/;opcache.memory_consumption=128/opcache.memory_consumption=128/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_81_CONF}/cgi/php.ini
+        sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_81_CONF}/cgi/php.ini
+    fi
+
+    if [ -d "${PHP_82_CONF}/cli/" ]; then
+        echo "- Configure php 8.1 cli"
+        
+        sed -i "s/expose_php = On/expose_php = Off/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/max_execution_time = 30/max_execution_time = 120/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/memory_limit = 128M/memory_limit = 512M/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/post_max_size = 8M/post_max_size = 20M/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 10M/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/allow_url_fopen = On/allow_url_fopen = Off/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/;date.timezone =/date.timezone = Europe\/Sofia/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/session.use_strict_mode = 0/session.use_strict_mode = 1/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/session.name = PHPSESSID/session.name = ${SESSION_NAME}/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/session.cookie_httponly =/session.cookie_httponly = 1/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/session.cookie_samesite =/session.cookie_samesite = \"lax\"/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/;opcache.enable=1/opcache.enable=1/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/;opcache.memory_consumption=128/opcache.memory_consumption=128/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/;opcache.max_accelerated_files=10000/opcache.max_accelerated_files=10000/g" ${PHP_81_CONF}/cli/php.ini
+        sed -i "s/;opcache.revalidate_freq=2/opcache.revalidate_freq=100/g" ${PHP_81_CONF}/cli/php.ini
+    fi
+
+
 
 if [ -d "/etc/modsecurity/" ]; then
     echo "- Configure mod_security2"

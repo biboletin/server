@@ -24,6 +24,7 @@ for app in ${SOFTWARE[*]}; do
         done
         task_done "Software installed"
     fi
+    sleep 1
 done
 
 echo "Install mod_security"
