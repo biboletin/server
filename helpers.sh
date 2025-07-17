@@ -1,4 +1,8 @@
 #!/bin/bash
+set -euo pipefail
+
+# Helper functions for the web server configurator
+# This script provides utility functions for displaying messages, loading spinners, and creating backups.
 
 banner() {
     clear
@@ -7,8 +11,63 @@ banner() {
 Web server configurator
 ***************************************************
     "
-    echo ""
-    echo ""
+}
+
+# Informative messages
+info() {
+    echo -e "\e[32m[INFO]\e[00m $1"
+}
+
+# Warning messages
+warning() {
+    echo -e "\e[35m[WARNING]\e[00m $1"
+}
+
+# Error messages
+error() {
+    echo -e "\e[31m[ERROR]\e[00m $1"
+    exit 1
+}
+
+# Success messages
+success() {
+    echo -e "\e[32m[SUCCESS]\e[00m $1"
+}
+
+# Prechecks
+precheck() {
+	echo -e "\e[93m[PRECHECK]\e[00m $1"
+}
+
+# Installing messages
+installing() {
+	echo -e "\e[34m[INSTALL]\e[00m $1"
+}
+
+# Configuration messages
+configure() {
+	echo -e "\e[34m[CONFIGURE]\e[00m $1"
+}
+
+# Function to install packages if not already installed
+install_packages() {
+	local packages=("$@")
+
+	for pkg in "${packages[@]}"; do
+        if ! dpkg -s "$pkg" >/dev/null 2>&1; then
+            plus_sign "$pkg"
+#            apt install -y "$pkg"
+        else
+            info "$pkg already installed"
+        fi
+    done
+}
+
+plus_sign() {
+#    echo -e "\e[34m-------------------------------------------------------------\e[00m"
+    echo -e "\e[93m[+]\e[00m $1"
+#    echo -e "\e[34m-------------------------------------------------------------\e[00m"
+#    echo ""
 }
 
 load_spinner() {
@@ -22,34 +81,6 @@ load_spinner() {
         sleep 0.02
     done
     echo -e "\033[2K"
-}
-
-# configure() {
-#     echo -e "\e[34m---------------------------------------------------------------------------------------------------------\e[00m"
-#     echo -e "\e[93m[+]\e[00m Configure $1"
-#     echo -e "\e[34m---------------------------------------------------------------------------------------------------------\e[00m"
-#     echo ""
-# }
-
-# installing() {
-#     echo -e "\e[93m[+]\e[00m Installing $1"
-# }
-
-main_message() {
-    echo -e "\e[34m-------------------------------------------------------------\e[00m"
-    echo -e "\e[93m[+]\e[00m $1"
-    echo -e "\e[34m-------------------------------------------------------------\e[00m"
-    echo ""
-}
-
-sub_message() {
-    echo -e "\e[93m[-]\e[00m $1"
-}
-
-task_done() {
-    echo -e "\e[34m-------------------------------------------------------------\e[00m"
-    echo -e "\e[93m[+]\e[00m $1"
-    echo -e "\e[34m-------------------------------------------------------------\e[00m"
 }
 
 #
