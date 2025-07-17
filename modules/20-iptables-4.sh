@@ -1,15 +1,22 @@
 #!/bin/bash
+set -euo pipefail
 
-if [ ! -d "/home/${USER}/Documents" ]; then
-    mkdir /home/${USER}/Documents
-    cd /home/${USER}/Documents
-else 
-    cd /home/${USER}/Documents
+source helpers.sh
+source ./config/env.sh
+
+info "Setting up iptables rules for IPv4..."
+
+if [ ! -d "${HOME_DIR}/Documents" ]; then
+    mkdir -p "${HOME_DIR}/Documents"
+    cd "${HOME_DIR}/Documents"
+else
+    cd "${HOME_DIR}/Documents"
 fi
 
 curl -s https://www.cloudflare.com/ips-v4 -o "$CLOUDFLARE_IP_LIST"
 
-iptables-save > iptables_default_${TODAY}.rules
+
+iptables-save > iptables_default_ipv4_${TODAY}.rules
 
 iptables -P INPUT ACCEPT
 iptables -P OUTPUT ACCEPT
@@ -55,7 +62,7 @@ if [ "true" == "${IS_ROUTER}" ]; then
     else
         echo 'net.ipv4.ip_forward=1' >>/etc/sysctl.conf
     fi
-    
+
     iptables -t nat -A POSTROUTING -j MASQUERADE
     iptables -A FORWARD -i $SECOND_NETWORK_INTERFACE -o $MAIN_NETWORK_INTERFACE -j ACCEPT -m comment --comment "Allow internal network to access external"
 fi
