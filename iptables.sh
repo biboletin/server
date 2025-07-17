@@ -7,6 +7,8 @@ else
     cd /home/${USER}/Documents
 fi
 
+curl -s https://www.cloudflare.com/ips-v4 -o "$CLOUDFLARE_IP_LIST"
+
 iptables-save > iptables_default_${TODAY}.rules
 
 iptables -P INPUT ACCEPT
@@ -24,9 +26,20 @@ iptables -P INPUT DROP
 iptables -P OUTPUT DROP
 iptables -P FORWARD DROP
 
+# Logging
 # For PSAD
-iptables -A INPUT -j LOG
-iptables -A FORWARD -j LOG
+# Suspicious packet logging for PSAD and diagnostics
+iptables -N LOGGING
+
+# Drop and log invalid packets (helpful for PSAD)
+iptables -A INPUT -m state --state INVALID -j LOG --log-prefix "INVALID_PKT: " --log-level 4
+iptables -A INPUT -m state --state INVALID -j DROP
+
+# Log potential scans (non-SYN new packets, XMAS, NULL, etc.)
+iptables -A INPUT -p tcp ! --syn -m state --state NEW -j LOG --log-prefix "NON_SYN_NEW: " --log-level 4
+iptables -A INPUT -p tcp --tcp-flags ALL NONE -j LOG --log-prefix "NULL_PKT: " --log-level 4
+iptables -A INPUT -p tcp --tcp-flags ALL ALL -j LOG --log-prefix "XMAS_PKT: " --log-level 4
+
 
 # Whitelist ip addresses and network interfaces
 iptables -A INPUT -s $EXTERNAL_IP -j ACCEPT -m comment --comment "Allow external ip address"
@@ -68,9 +81,11 @@ iptables -A INPUT -p tcp --syn -m multiport --dports $HTTP,$HTTPS -m connlimit -
 iptables -A OUTPUT -p tcp --sport $HTTP -m conntrack --ctstate ESTABLISHED -j ACCEPT -m comment --comment "Allow outgoing HTTP"
 iptables -A OUTPUT -p tcp --sport $HTTPS -m conntrack --ctstate ESTABLISHED -j ACCEPT -m comment --comment "Allow outgoing HTTPS"
 
-for ip in $(curl https://www.cloudflare.com/ips-v4); do
-    iptables -I INPUT -p tcp -m multiport --dports $HTTP,$HTTPS -s $ip -j ACCEPT -m comment --comment "Allow Cloudflare network ip ${ip}"
-done
+if [ -f "${CLOUDFLARE_IP_LIST}" ]; then
+    while read -r ip; do
+        iptables -A INPUT -p tcp -m multiport --dports $HTTP,$HTTPS -s "$ip" -j ACCEPT -m comment --comment "Allow Cloudflare IP $ip"
+    done < $CLOUDFLARE_IP_LIST
+fi
 
 iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP -m comment --comment "Force SYN packets check"
 iptables -A INPUT -f -j DROP -m comment --comment "Force Fragments packets check"
@@ -105,19 +120,32 @@ iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT -m comment --comment "
 iptables -A OUTPUT -o $MAIN_NETWORK_INTERFACE -p udp -s $SERVER_IP -d 0/0 --sport 32768:65535 --dport 123 -m state --state NEW -j ACCEPT -m comment --comment "Allow time sync"
 iptables -A INPUT -i $MAIN_NETWORK_INTERFACE -p udp -d $SERVER_IP -s 0/0 --sport 123 --dport 32768:65535 -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow time sync"
 
-# Any IP that performs a PortScan will be blocked for 24 hours
+# === Begin Generalized Portscan Detection ===
+
+# Port scanning
+iptables -N PORTSCAN
+iptables -A PORTSCAN -m recent --name portscan --set
+iptables -A PORTSCAN -j LOG --log-prefix "PORTSCAN: " --log-level 4
+iptables -A PORTSCAN -j DROP
+
 iptables -A INPUT -m recent --name portscan --rcheck --seconds 86400 -j DROP
-iptables -A FORWARD -m recent --name portscan --rcheck --seconds 86400 -j DROP
-
-# After 24 hours remove IP from block list
 iptables -A INPUT -m recent --name portscan --remove
-iptables -A FORWARD -m recent --name portscan --remove
 
-# This rule logs the port scan attempt
-iptables -A INPUT -p tcp -m tcp --dport 139 -m recent --name portscan --set -j LOG --log-prefix "Portscan:"
-iptables -A INPUT -p tcp -m tcp --dport 139 -m recent --name portscan --set -j DROP
-iptables -A FORWARD -p tcp -m tcp --dport 139 -m recent --name portscan --set -j LOG --log-prefix "Portscan:"
-iptables -A FORWARD -p tcp -m tcp --dport 139 -m recent --name portscan --set -j DROP
+iptables -A INPUT -p tcp --tcp-flags ALL NONE -j PORTSCAN         # NULL scan
+iptables -A INPUT -p tcp --tcp-flags ALL ALL -j PORTSCAN          # XMAS scan
+iptables -A INPUT -p tcp --tcp-flags SYN,RST SYN,RST -j PORTSCAN  # SYN/RST
+iptables -A INPUT -p tcp --tcp-flags SYN,FIN SYN,FIN -j PORTSCAN  # SYN/FIN
+iptables -A INPUT -p tcp --tcp-flags FIN FIN -j PORTSCAN
+iptables -A INPUT -p tcp --tcp-flags ACK,FIN FIN -j PORTSCAN
+iptables -A INPUT -p tcp --tcp-flags ACK,PSH PSH -j PORTSCAN
+iptables -A INPUT -p tcp --tcp-flags ACK,URG URG -j PORTSCAN
+
+
+iptables -A INPUT -j LOGGING
+iptables -A LOGGING -m limit --limit 3/min -j LOG --log-prefix "DROP: " --log-level 4
+iptables -A LOGGING -j DROP
+
+# === End Generalized Portscan Detection ===
 
 iptables -A INPUT -j DROP
 iptables -A OUTPUT -j DROP

@@ -462,7 +462,7 @@ echo "
         IncludeOptional /usr/share/modsecurity-crs/*.load
         # from configuration
 </IfModule>
-"  > ${MOD_SECURITY_2}
+" > ${MOD_SECURITY_2}
 fi
 
 if [ -f "${MOD_QOS}" ]; then

@@ -67,6 +67,8 @@ PHP_82_CONF="/etc/php/8.2"
 SESSION_NAME="PHPSESSID"
 
 # network
+CLOUDFLARE_IP_LIST="~/Documents/cloudflare-ips.txt"
+
 IS_ROUTER="false"
 # 192.168.0.1
 SERVER_IP=""
@@ -133,8 +135,8 @@ SOFTWARE=(
     "debsums"
     "cryptsetup"
     "varnish"
-    "psad"
-    "aide"
+#    "psad"
+#    "aide"
     "redis"
     "unzip"
 )
