@@ -1,39 +1,39 @@
 #!/bin/bash
+set -euo pipefail
 
 # variables
+EXCLUDED_FILES=(
+	"20-iptables-4.sh"
+	"21-iptables-6.sh"
+)
 
 # main
 TODAY=$(date +"%Y_%m_%d")
-PASSWORD=`openssl rand 60 | openssl base64 -A`
+PASSWORD=$(openssl rand 60 | openssl base64 -A)
 # admin
-USER=""
+USER="bibo"
 # root
-GROUP=""
-HOME="/home/${USER}"
-DOCUMENTS="${HOME}/Documents"
-LOG_FILE="/var/log/install_script.log"
+GROUP="bibo"
+# home
+HOME_DIR="/home/${USER}"
+
+DOCUMENTS="${HOME_DIR}/Documents"
+LOG_FILE="./logs/install.log"
 
 # web
 WEB_ROOT="/var/www/html"
 # example
-HOST_NAME=""
+HOST_NAME="example"
 # example.com
-DOMAIN_NAME=""
+DOMAIN_NAME="example.com"
 MAIL_DOMAIN_NAME="mail.${DOMAIN_NAME}"
 # example.com
-SITE_NAME=""
+SITE_NAME="example.com"
 SITE_ADDR="https://${SITE_NAME}"
 # if needed
 GIT_USER=""
 GIT_PASSWORD=""
 MYSQL_PASSWORD=""
-
-# zabbix
-ZABBIX_DB=""
-ZABBIX_USER=""
-ZABBIX_PASSWORD=""
-# varnish
-VARNISH_HOST=""
 
 # mod security
 MOD_SECURITY_WHITELIST_LAN="192.168.0.0/24"
@@ -47,10 +47,10 @@ MOD_SECURITY_WHITELIST_REGEX="^@\.@\.@\.@"
 COUNTRY="BG"
 STATE="Bulgaria"
 LOCALITY="Sofia"
-ORGANISATION="biboletin"
-ORGANISATION_UNIT="biboletin"
+ORGANISATION="example"
+ORGANISATION_UNIT="example"
 COMMON_NAME="${DOMAIN_NAME}"
-EMAIL=""
+EMAIL="example@example.com"
 
 
 
@@ -67,7 +67,7 @@ PHP_82_CONF="/etc/php/8.2"
 SESSION_NAME="PHPSESSID"
 
 # network
-CLOUDFLARE_IP_LIST="~/Documents/cloudflare-ips.txt"
+CLOUDFLARE_IP_LIST="$HOME/Documents/cloudflare-ips.txt"
 
 IS_ROUTER="false"
 # 192.168.0.1
@@ -93,52 +93,85 @@ POP3=110
 POP3S=995
 DNS=53
 
+# Spoofing ips
+SPOOFING_IPS=(
+	""
+)
+
+
 # Create directories
 DIRS=(
-    "Downloads"
-    "Documents"
-    "Desktop"
-    "Pictures"
+    "${HOME_DIR}/Downloads"
+    "${HOME_DIR}/Documents"
+    "${HOME_DIR}/Desktop"
+    "${HOME_DIR}/Pictures"
 )
+
 # Install software
-SOFTWARE=(
-    "net-tools"
-    "wget"
-    "software-properties-common"
-    "curl"
+TOOLS=(
+	"net-tools"
+	"wget"
+	"ufw"
+	"htop"
+	"dnsutils"
+	"curl"
+	"auditd"
+	"sysstat"
+	"unzip"
+	"git"
+	"fail2ban"
+)
+
+WEB=(
     "apache2"
-    "mariadb-server"
-    "php"
-    "php8.1"
-    "php8.2"
+    "php7.4"
+    "php8.3"
+    "php8.4"
+    "redis"
+    "varnish"
+    "vsftpd"
     "libapache2-mod-security2"
     "libapache2-mod-evasive"
     "libapache2-mod-qos"
-    "libpam-cracklib"
-    "apt-show-versions"
-    "git"
-    "fail2ban"
-    "certbot"
-    "python3-certbot-apache"
-    "letsencrypt"
-    "auditd"
-    "sysstat"
-    "chkrootkit"
-    "clamav"
+)
+
+DATABASES=(
+    "mariadb-server"
+    "postgresql"
+    "postgresql-contrib"
     "redis-server"
-    "postfix"
-    "mailutils"
-    "vsftpd"
-    "iptables"
-    "iptables-persistent"
+)
+
+SECURITY=(
     "gnupg"
     "debsums"
     "cryptsetup"
-    "varnish"
+    "chkrootkit"
+    "clamav"
+)
+EMAIL=(
+    "postfix"
+    "mailutils"
+)
+SSL=(
+	"certbot"
+	"python3-certbot-apache"
+	"letsencrypt"
+)
+
+FIREWALL=(
+    "iptables"
+    "iptables-persistent"
 #    "psad"
 #    "aide"
-    "redis"
-    "unzip"
+)
+
+EXTRAS=(
+	"software-properties-common"
+	"apt-transport-https"
+	"apt-show-versions"
+	"ca-certificates"
+	"libpam-cracklib"
 )
 
 # Install php extensions
