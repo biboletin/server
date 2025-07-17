@@ -18,6 +18,12 @@ fi
 mkdir -p ./logs
 exec > >(tee -a "$LOG_FILE") 2>&1
 
+info "Update and upgrade system packages before installation"
+#update_packages
+
+clear
+
+banner
 
 info "Starting installation at $(date)"
 
@@ -30,7 +36,7 @@ for dir in "${DIRS[@]}"; do
 		mkdir -p "${HOME_DIR}/$dir"
 		chown -R ${USER}:${GROUP} "${HOME_DIR}/${dir}"
 	else
-		info "Directory $dir already exists"
+		minus_sign "Directory $dir already exists"
 	fi
 done
 
