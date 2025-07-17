@@ -8,19 +8,40 @@ banner() {
     clear
     echo "
 ***************************************************
-Web server configurator
+*               Web server configurator           *
 ***************************************************
-    "
+"
+}
+
+update_packages() {
+	info "Updating package lists..."
+
+	apt-get update -y
+
+	if [ $? -ne 0 ]; then
+		error "Failed to update package lists"
+	fi
+
+	info "Upgrading installed packages..."
+
+	apt-get upgrade -y
+
+	if [ $? -ne 0 ]; then
+		error "Failed to upgrade installed packages"
+	fi
+
+	apt-get autoremove -y
+	apt-get autoclean -y
 }
 
 # Informative messages
 info() {
-    echo -e "\e[32m[INFO]\e[00m $1"
+    echo -e "\e[36m[INFO]\e[00m $1"
 }
 
 # Warning messages
 warning() {
-    echo -e "\e[35m[WARNING]\e[00m $1"
+    echo -e "\e[93m[WARNING]\e[00m $1"
 }
 
 # Error messages
@@ -55,10 +76,10 @@ install_packages() {
 
 	for pkg in "${packages[@]}"; do
         if ! dpkg -s "$pkg" >/dev/null 2>&1; then
-            plus_sign "$pkg"
+            plus_sign "Installing $pkg..."
 #            apt install -y "$pkg"
         else
-            info "$pkg already installed"
+            minus_sign "$pkg already installed"
         fi
     done
 }
@@ -66,6 +87,12 @@ install_packages() {
 plus_sign() {
 #    echo -e "\e[34m-------------------------------------------------------------\e[00m"
     echo -e "\e[93m[+]\e[00m $1"
+#    echo -e "\e[34m-------------------------------------------------------------\e[00m"
+#    echo ""
+}
+minus_sign() {
+#    echo -e "\e[34m-------------------------------------------------------------\e[00m"
+    echo -e "\e[35m[-]\e[00m $1"
 #    echo -e "\e[34m-------------------------------------------------------------\e[00m"
 #    echo ""
 }
